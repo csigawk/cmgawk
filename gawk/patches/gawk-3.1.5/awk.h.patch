@@ -1,0 +1,25 @@
+*** awk.h Tue Jul 26 12:07:43 2005
+--- awk.h.new Wed Jan 14 11:44:56 2009
+***************
+*** 1052,1058 ****
+--- 1052,1071 ----
+  #endif
+  /* ext.c */
+  NODE *do_ext P((NODE *));
++ 
+  #ifdef DYNAMIC
++ 
++ NODE * do_stat P((NODE*));
++ NODE * do_lstat P((NODE*));
++ NODE * do_chdir P((NODE*));
++ NODE * do_readdir P((NODE*));
++ NODE * do_pipe P((NODE*));
++ NODE * do_closefd P((NODE*));
++ NODE * do_mkfifo P((NODE*));
++ NODE * do_unlink P((NODE*));
++ NODE * do_lckpwdf P((NODE*));
++ NODE * do_ulckpwdf P((NODE*));
++ 
+  void make_builtin P((char *, NODE *(*)(NODE *), int));
+  NODE *get_argument P((NODE *, int));
+  NODE *get_actual_argument P((NODE *, unsigned int, int, int));

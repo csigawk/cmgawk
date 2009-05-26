@@ -1,0 +1,48 @@
+*** main.c Wed Jul 6 08:05:14 2005
+--- main.c.new Wed Jan 14 11:45:52 2009
+***************
+*** 47,52 ****
+--- 47,53 ----
+  static void cmdline_fs P((char *str));
+  static void init_args P((int argc0, int argc, char *argv0, char **argv));
+  static void init_vars P((void));
++ static void preload_extensions P((void));
+  static NODE *load_environ P((void));
+  static NODE *load_procinfo P((void));
+  static void add_src P((struct src **data, long *num, long *alloc, enum srctype stype, char *val));
+***************
+*** 547,552 ****
+--- 548,554 ----
+  	}
+  
+  	init_args(optind, argc, (char *) myname, argv);
++ 	preload_extensions();
+  	(void) tokexpand();
+  
+  #if defined(LC_NUMERIC)
+***************
+*** 808,813 ****
+--- 810,832 ----
+  			node(make_number((AWKNUM) j), Node_var, (NODE *) NULL));
+  }
+  
++ static void
++ preload_extensions()
++ {
++ #ifdef DYNAMIC
++ 	make_builtin("csi_chdir", do_chdir, 1);
++ 	make_builtin("csi_stat", do_stat, 2);
++ 	make_builtin("csi_lstat", do_lstat, 2);
++ 	make_builtin("csi_readdir", do_readdir, 2);
++ 	make_builtin("csi_pipe", do_pipe, 1);
++ 	make_builtin("csi_closefd", do_closefd, 1);
++ 	make_builtin("csi_mkfifo", do_mkfifo, 2);
++ 	make_builtin("csi_unlink", do_unlink, 1);
++ 	make_builtin("csi_lckpwdf", do_lckpwdf, 0);
++ 	make_builtin("csi_ulckpwdf", do_ulckpwdf, 0);
++ #endif
++ }
++ 
+  /*
+   * Set all the special variables to their initial values.
+   * Note that some of the variables that have set_FOO routines should

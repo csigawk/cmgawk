@@ -1,0 +1,19 @@
+*** configure Tue Jul 26 12:44:04 2005
+--- configure.new Wed Jan 14 11:44:22 2009
+***************
+*** 270,276 ****
+  PACKAGE_NAME='GNU Awk'
+  PACKAGE_TARNAME='gawk'
+  PACKAGE_VERSION='3.1.5'
+! PACKAGE_STRING='GNU Awk 3.1.5'
+  PACKAGE_BUGREPORT='bug-gawk@gnu.org'
+  
+  # Factoring default headers for most tests.
+--- 270,276 ----
+  PACKAGE_NAME='GNU Awk'
+  PACKAGE_TARNAME='gawk'
+  PACKAGE_VERSION='3.1.5'
+! PACKAGE_STRING="GNU Awk 3.1.5  (w/ ECM extensions, build `date +"%y%j"`)"
+  PACKAGE_BUGREPORT='bug-gawk@gnu.org'
+  
+  # Factoring default headers for most tests.

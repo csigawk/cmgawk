@@ -1,0 +1,61 @@
+*** io.c Tue Jul 26 12:07:43 2005
+--- io.c.new Wed Jan 14 11:44:22 2009
+***************
+*** 2480,2488 ****
+  {
+  	struct stat sbuf;
+  	struct open_hook *oh;
+  
+! 	if (iop == NULL)
+  		emalloc(iop, IOBUF *, sizeof(IOBUF), "iop_alloc");
+  	memset(iop, '\0', sizeof(IOBUF));
+  	iop->flag = 0;
+  	iop->fd = fd;
+--- 2480,2491 ----
+  {
+  	struct stat sbuf;
+  	struct open_hook *oh;
++ 	int iop_malloced = FALSE;
+  
+! 	if (iop == NULL) {
+  		emalloc(iop, IOBUF *, sizeof(IOBUF), "iop_alloc");
++ 		iop_malloced = TRUE;
++ 	}
+  	memset(iop, '\0', sizeof(IOBUF));
+  	iop->flag = 0;
+  	iop->fd = fd;
+***************
+*** 2495,2501 ****
+  	}
+  
+  	if (iop->fd == INVALID_HANDLE) {
+! 		free(iop);
+  		return NULL;
+  	}
+  	if (isatty(iop->fd))
+--- 2498,2505 ----
+  	}
+  
+  	if (iop->fd == INVALID_HANDLE) {
+! 		if (iop_malloced)
+! 			free(iop);
+  		return NULL;
+  	}
+  	if (isatty(iop->fd))
+***************
+*** 2503,2509 ****
+  	iop->readsize = iop->size = optimal_bufsize(iop->fd, & sbuf);
+  	iop->sbuf = sbuf;
+  	if (do_lint && S_ISREG(sbuf.st_mode) && sbuf.st_size == 0)
+! 			lintwarn(_("data file `%s' is empty"), name);
+  	errno = 0;
+  	iop->count = iop->scanoff = 0;
+  	emalloc(iop->buf, char *, iop->size += 2, "iop_alloc");
+--- 2507,2513 ----
+  	iop->readsize = iop->size = optimal_bufsize(iop->fd, & sbuf);
+  	iop->sbuf = sbuf;
+  	if (do_lint && S_ISREG(sbuf.st_mode) && sbuf.st_size == 0)
+! 		lintwarn(_("data file `%s' is empty"), name);
+  	errno = 0;
+  	iop->count = iop->scanoff = 0;
+  	emalloc(iop->buf, char *, iop->size += 2, "iop_alloc");
